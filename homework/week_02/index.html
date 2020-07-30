@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+          crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- 구글폰트 -->
+  <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      padding: 20px;
+      font-family: 'Stylish', sans-serif;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    p {
+      padding: 0;
+      margin: 0;
+    }
+
+    #wrap {
+      display: inline-block;
+      width: 600px;
+      text-align: left;
+    }
+
+    .img_box {
+      overflow: hidden;
+      max-height: 600px;
+    }
+
+    .img_box img {
+      width: 100%;
+    }
+
+    .section .desc_box {
+      margin: 20px 0 10px 0;
+    }
+
+    .section .desc_box p {
+      margin: 10px 0 0 0;
+      line-height: 18px;
+    }
+
+    .section .desc_title {
+      font-size: 30px;
+    }
+
+    .section .desc_info {
+      font-size: 18px;
+    }
+
+    .section .desc_info em {
+      font-style: normal;
+    }
+
+    .btn_order {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .rate {
+      display: block;
+      margin: 0 0 20px 0;
+      color: #0000ff;
+    }
+  </style>
+
+  <script>
+      function orderSuccess() {
+          let checkTelVal = function () {
+              let userTelVal = $('#user_tel').val();
+              let regex = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})[-][0-9]{3,4}[-][0-9]{4}$/;
+
+              return regex.test(userTelVal);
+          }
+
+          let $userName = $('#user_name')
+          if ($userName.val() == '') {
+              alert('이름을 입력해주세요.')
+              $userName.focus()
+              return;
+          }
+
+          let $userOrderCount = $('#user_order_count')
+          if ($userOrderCount.val() == '-- 수량을 선택하세요 --') {
+              alert('수량을 선택해주세요.')
+              $userOrderCount.focus()
+              return;
+          }
+
+          let $userAddress = $('#user_address')
+          if ($userAddress.val() == '') {
+              alert('주소를 입력해주세요.')
+              $userAddress.focus()
+              return;
+          }
+
+          let $userTel = $('#user_tel')
+          if ($userTel.val() == '') {
+              alert('전화번호를 입력해주세요.')
+              $userTel.focus()
+              return;
+          }
+
+          if (!checkTelVal()) {
+              alert('휴대폰 입력 형식이 틀립니다.\n 010-0000-0000 으로 입력해주세요')
+              $userTel.focus()
+          } else {
+              alert('주문이 완료되었습니다.')
+          }
+      }
+
+      $(document).ready(function () {
+          $.ajax({
+              type: 'get',
+              url: 'https://api.manana.kr/exchange/rate.json',
+              success: function (res) {
+                  let rate = 0;
+                  for (let i = 0; i < res.length; i++) {
+                      if (res[i]['name'] == 'USDKRW=X') {
+                          rate = res[i]['rate']
+                      }
+                  }
+                  $('#include_rate').after('<span class="rate">달러-원 환율: ' + rate + '</span>')
+              }
+          })
+      })
+  </script>
+
+  <title>나만의 쇼핑몰</title>
+</head>
+<body>
+<div id="wrap">
+  <div class="section">
+    <div class="img_box">
+      <img src="https://i.pinimg.com/236x/aa/db/62/aadb623e47bc38418ab180ed6a764c76--marianne-fragrance.jpg" alt="양초">
+    </div>
+
+    <div id="include_rate" class="desc_box">
+      <span class="desc_title">양초를 팝니다</span>
+      <span class="desc_info">가격: <em class="price">3,000</em>원/개</span>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur corporis distinctio, ex id minus natus
+        omnis? At consectetur dicta distinctio dolor, eum fugiat id illum modi, natus officiis ullam voluptatum.</p>
+    </div>
+
+    <div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="user_name">주문자이름</label>
+        </div>
+        <input type="text" id="user_name" class="form-control">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="user_order_count">수량</label>
+        </div>
+        <select class="custom-select" id="user_order_count">
+          <option selected>-- 수량을 선택하세요 --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="user_address">주소</label>
+        </div>
+        <input type="text" id="user_address" class="form-control">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="user_tel">전화번호</label>
+        </div>
+        <input type="tel" id="user_tel" class="form-control">
+      </div>
+
+      <button type="button" onclick="orderSuccess()" class="btn btn-primary btn_order">
+        주문하기
+      </button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

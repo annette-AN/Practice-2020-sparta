@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+          crossorigin="anonymous"></script>
+
+  <!-- 구글폰트 -->
+  <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      padding: 20px;
+      font-family: 'Stylish', sans-serif;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    #wrap {
+      display: inline-block;
+      width: 600px;
+      text-align: left;
+    }
+
+    .img_box {
+      overflow: hidden;
+      max-height: 600px;
+    }
+
+    .img_box img {
+      width: 100%;
+    }
+
+    .section .desc_box {
+      margin: 20px 0 0 0;
+    }
+
+    .section .desc_box p {
+      line-height: 18px;
+    }
+
+    .section .desc_title {
+      font-size: 30px;
+    }
+
+    .section .desc_info {
+      font-size: 18px;
+    }
+
+    .section .desc_info em {
+      font-style: normal;
+    }
+  </style>
+
+  <script>
+      function orderSuccess() {
+          alert('주문이 완료되었습니다.')
+      }
+  </script>
+
+  <title>나만의 쇼핑몰</title>
+</head>
+<body>
+<div id="wrap">
+  <div class="section">
+    <div class="img_box">
+      <img src="https://i.pinimg.com/236x/aa/db/62/aadb623e47bc38418ab180ed6a764c76--marianne-fragrance.jpg" alt="양초">
+    </div>
+
+    <div class="desc_box">
+      <span class="desc_title">양초를 팝니다</span>
+      <span class="desc_info">가격: <em class="price">3,000</em>원/개</span>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur corporis distinctio, ex id minus natus
+        omnis? At consectetur dicta distinctio dolor, eum fugiat id illum modi, natus officiis ullam voluptatum.</p>
+    </div>
+
+    <div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="basic-addon1">주문자이름</label>
+        </div>
+        <input type="text" id="basic-addon1" class="form-control" aria-label="Username"
+               aria-describedby="basic-addon1">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">수량</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+          <option selected>-- 수량을 선택하세요 --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="basic-addon2">주소</label>
+        </div>
+        <input type="text" id="basic-addon2" class="form-control" aria-label="Username"
+               aria-describedby="basic-addon2">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="basic-addon3">전화번호</label>
+        </div>
+        <input type="tel" id="basic-addon3" class="form-control" aria-label="Username"
+               aria-describedby="basic-addon3">
+      </div>
+
+      <button type="button" onclick="orderSuccess()" class="btn btn-primary" style="display: block; margin: 0 auto;">
+        주문하기
+      </button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
