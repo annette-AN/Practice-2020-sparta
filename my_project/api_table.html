@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body {font-size: 14px; text-align: center;}
+        #wrap {display: inline-block; width: 90%; max-width: 1400px; margin: 60px 0; text-align: left;}
+        table {width: 100%; table-layout: fixe; border-collapse: collapse;}
+        table + table {margin: 20px 0 0 0;}
+        thead th {padding: 4px; border: 1px solid #c4c4c4; font-weight: normal; background: #f8f8f8; text-align: center;}
+        tbody td {padding: 4px; border: 1px solid #c4c4c4;}
+        tbody tr:first-child td {border-top: none;}
+        tbody tr:nth-child(2n) td {background: #f8f8f8;}
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrap">
+        <table>
+            <thead>
+            <tr>
+                <th rowspan="2">기능</th>
+                <th colspan="3">요청</th>
+    <!--                <th></th>-->
+    <!--                <th></th>-->
+                <th>응답</th>
+            </tr>
+            <tr>
+    <!--            <th></th>-->
+                <th>요청 URL</th>
+                <th>요청 방식</th>
+                <th>요청 데이터</th>
+                <th>응답 데이터</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>보드 작성(create)</td>
+                <td>/post_board</td>
+                <td>POST</td>
+                <td>보드이름(name: string)</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>카테고리 작성(create)</td>
+                <td>/post_category</td>
+                <td>POST</td>
+                <td>카테고리이름(name: string)</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>보드 불러오기(read)</td>
+                <td>/get_board</td>
+                <td>GET</td>
+                <td>없음</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>카테고리 불러오기(read)</td>
+                <td>/get_category</td>
+                <td>GET</td>
+                <td>없음</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <colgroup>
+                <col style="width: 120px"><col><col><col><col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th rowspan="2">기능</th>
+                <th colspan="3">요청</th>
+    <!--                <th></th>-->
+    <!--                <th></th>-->
+                <th>응답</th>
+            </tr>
+            <tr>
+    <!--            <th></th>-->
+                <th>요청 URL</th>
+                <th>요청 방식</th>
+                <th>요청 데이터</th>
+                <th>응답 데이터</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>보드 작성<br>(create)</td>
+                <td rowspan="3">/api/boards</td>
+                <td>POST</td>
+                <td>보드순서Id('nextId': number, 보드정보('board': [])<br>
+                    --> 보드정보: [보드Id('Id': number), 보드이름('name': string)])</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>보드 불러오기<br>(read)</td>
+<!--                <td></td>-->
+                <td>GET</td>
+                <td>없음</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>보드 수정하기<br>(update)</td>
+<!--                <td></td>-->
+                <td>PUT</td>
+                <td>보드순서Id('nextId': number), 보드정보('board': [])<br>
+                    --> 보드정보: [보드Id('Id': number), 보드이름('name': string)])</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+
+            <tr>
+                <td>카테고리 작성<br>(create)</td>
+                <td rowspan="3">/api/categorys</td>
+                <td>POST</td>
+                <td>카테고리순서Id('nextId': number), 카테고리정보('category': [])<br>
+                    --> 카테고리정보: [보드Id('boardId': number), 카테고리Id('Id': number), 카테고리이름('name': string)])</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>카테고리 불러오기<br>(read)</td>
+<!--                <td></td>-->
+                <td>GET</td>
+                <td>없음</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>카테고리 수정하기<br>(update)</td>
+<!--                <td></td>-->
+                <td>PUT</td>
+                <td>카테고리순서Id('nextId': number), 카테고리정보('category': [])<br>
+                    --> 카테고리정보: [보드Id('boardId': number), 카테고리Id('Id': number), 카테고리이름('name': string)])</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+
+            <tr>
+                <td>메모 작성<br>(create)</td>
+                <td rowspan="3">/api/memos</td>
+                <td>POST</td>
+                <td>메모순서Id('nextId': number), 메모정보('memo': [])<br>
+                    --> 메모정보: [카테고리Id('boardId': number), 메모Id('Id': number), 메모이름('name': string), 메모내용('content': string)])</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>메모 불러오기<br>(read)</td>
+<!--                <td></td>-->
+                <td>GET</td>
+                <td>없음</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            <tr>
+                <td>메모 수정하기<br>(update)</td>
+<!--                <td></td>-->
+                <td>PUT</td>
+                <td>카테고리순서Id('nextId': number), 메모정보('memo': [])<br>
+                    --> 메모정보: [카테고리Id('boardId': number), 메모Id('Id': number), 메모이름('name': string), 메모내용('content': string)])</td>
+                <td>(JSON 형식) 'result'='success'</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+</html>

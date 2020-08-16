@@ -1,0 +1,119 @@
+@charset "UTF-8";
+/*
+밝은회색 D9DADE
+더 밝은 회색 rgb(232, 232, 235);
+
+밝은하늘 C2D4EC
+버튼회색 778188
+흰색 FBF8F5
+*/
+
+.text_ir {font-size: 0; line-height: 0;}
+.search_box {position: relative;}
+.search_box .search_input {width: 170px; height: 26px; padding: 0px 10px; border: 1px solid #D9DADE;}
+.search_box .result_list {position: absolute; display: none; top: 100%; left: 0%; width: 100%; border: 1px solid #D9DADE; background: #FBF8F5; z-index: 10; text-align: left;}
+.search_box .result_list.result_show {display: block;}
+.search_box .result_list li {height: 26px; padding: 6px 10px; font-size: 12px;}
+.search_box .result_list li:hover {background: #C2D4EC;}
+.search_box .result_list li + li {border-top: 1px solid #D9DADE;}
+.search_box .result_box.result_show {display: block;}
+.each_setting {position: absolute; top: 0px; right: 0px; width: 30px; height: 30px;}
+.each_setting button[type=button] {display: block; width: 100%; height: 100%; background: url(../images/img_config.png) no-repeat 50% 50%; background-size: 20px auto;}
+.each_setting .setting_dropdown {position: absolute; display: none; top: 100%; border: 1px solid #D9DADE; background: #FBF8F5; text-align: right;}
+.each_setting .setting_dropdown.show {display: block;}
+.each_setting .setting_dropdown li {height: 26px; padding: 6px 10px; font-size: 12px;}
+.each_setting .setting_dropdown li:hover {background: #D9DADE;}
+.each_setting .setting_dropdown li + li {border-top: 1px solid #D9DADE;}
+.name_input, .name_span, .write_name, .plus_shape {display: none; height: 100%;}
+.name_input.show, .name_span.show, .write_name.show, .plus_shape.show {display: block;}
+
+#wrapper {padding: 20px; background: #C2D4EC;}
+#wrapper.sync_wait {cursor: wait;}
+#wrapper.sync_wait #content .board_list li span {cursor: wait;}
+#wrapper.sync_wait input, #wrapper.sync_wait button {cursor: wait;}
+#wrapper.sync_wait .sync {-webkit-animation-name: sync_rotate; animation-name: sync_rotate; -webkit-animation-duration: 1.5s; animation-duration: 1.5s; -webkit-animation-timing-function: linear; animation-timing-function: linear; -webkit-animation-iteration-count: infinite; animation-iteration-count: infinite;}
+
+@-webkit-keyframes sync_rotate {
+  0% {-webkit-transform: rotate(0deg); transform: rotate(0deg);}
+ 100% {-webkit-transform: rotate(360deg); transform: rotate(360deg);}
+}
+@keyframes sync_rotate {
+  0% {-webkit-transform: rotate(0deg); transform: rotate(0deg);}
+ 100% {-webkit-transform: rotate(360deg); transform: rotate(360deg);}
+}
+
+#top_area {position: relative; height: 40px; padding: 2px 15px 0px 15px;}
+#top_area > div {display: inline-block; vertical-align: middle;}
+#top_area .search_box {margin: 4px 0px 0px 0px;}
+#top_area .search_box .search_input {height: 28px;}
+#top_area .svc_box {position: absolute; top: 0; right: 15px;}
+#top_area .sync {width: 34px; height: 34px; margin: 0px 10px 0px 0px; border-radius: 50%; vertical-align: middle; background: #D9DADE url(../images/btn_sync.png) no-repeat center center; background-size: 28px; -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);}
+#top_area .each_setting {display: inline-block; position: static; top: auto; right: auto; vertical-align: middle;}
+#top_area .each_setting button[type=button] {background-size: 22px auto;}
+#top_area .each_setting .setting_dropdown {right: 0%;}
+#top_area .each_setting .setting_dropdown li:hover {background: #FBF8F5;}
+
+#content {margin: 10px 0px 0px 0px; height: calc(100vh - 90px); min-height: 300px;}
+#content .board_list {overflow: hidden;}
+#content .board_list li {overflow: hidden; float: left; min-width: 40px; height: 30px; line-height: 22px; padding: 5px 10px; border-radius: 10px 10px 0px 0px; border-top: 1px solid #FBF8F5; background: #D9DADE;}
+#content .board_list li.active {background: #FBF8F5;}
+#content .board_list li input[type=text], #content .board_list li span {height: 100%;}
+#content .board_list li input[type="text"] {background: #FBF8F5;}
+#content .board_list li span {cursor: default;}
+#content .board_list .create_name input[type=text] {background: #D9DADE;}
+#content .board_view {overflow: hidden; height: calc(100% - 30px); border: 1px solid #FBF8F5; -webkit-box-shadow: inset 0 0 8px rgba(251, 248, 245, 0.8); box-shadow: inset 0 0 8px rgba(251, 248, 245, 0.8); /* //category_list */ /* //memo_box */}
+#content .board_view > div {width: calc(50% - 10px);}
+#content .board_view .category_list {overflow-x: auto; float: left; width: calc(60% - 10px); height: 100%; padding: 15px 15px; white-space: nowrap; -webkit-transition: width .2s; transition: width .2s;}
+#content .board_view .category {position: relative; display: inline-block; width: 300px; height: 100%; max-height: 100%; vertical-align: top; -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);}
+#content .board_view .category + div {margin: 0px 0px 0px 20px;}
+#content .board_view .category_name {width: 100%; height: 30px; line-height: 22px; padding: 5px 10px; background: #fff;}
+#content .board_view .category_name input[type="text"], #content .board_view .category_name span {width: 100%; height: 100%; font-size: 12px;}
+#content .board_view .create_name {position: relative; display: inline-block; width: 300px; height: 30px; line-height: 24px; vertical-align: top; -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); background: #fff;}
+#content .board_view .create_name input[type="text"], #content .board_view .create_name span {width: 100%; height: 100%; padding: 5px 12px; font-size: 12px;}
+#content .board_view .cards {overflow: auto; height: auto; max-height: calc(100% - 30px);}
+#content .board_view .cards li {position: relative; height: 60px; margin: 10px; background: #edeff3; -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); cursor: pointer;}
+#content .board_view .cards .card_preview {width: calc(100% - 35px); padding: 10px; white-space: normal;}
+#content .board_view .cards .each_setting {top: 15px; right: 5px;}
+#content .board_view .cards .create_card {height: 30px;}
+#content .board_view .cards .create_card .add_memo {display: block; width: 100%; height: 100%;}
+#content .board_view .memo_box {float: right; position: relative; width: calc(40% - 10px); height: 100%; text-align: right; -webkit-transition: width .2s; transition: width .2s; background: #e8e8eb;}
+#content .board_view .memo_swich {position: absolute; top: calc(50% - 45px); left: -30px; width: 60px; height: 90px;}
+#content .board_view .memo_swich button[type=button] {width: 30px; height: 100%; border: 1px solid rgba(0, 0, 0, 0.3); border-radius: 3px;}
+#content .board_view .memo_swich button[type=button]:first-child {display: block; position: absolute; top: 0; left: 20px; border-right: none; background: #e8e8eb url(../images/chevron_left.png) no-repeat 50% 50%; background-size: 10px auto; -webkit-transition: left .2s; transition: left .2s;}
+#content .board_view .memo_swich button[type=button]:first-child:hover {left: 0px;}
+#content .board_view .memo_swich button[type=button]:last-child {display: none; position: absolute; top: 0; left: 15px; border-left: none; background: #e8e8eb url(../images/chevron_right.png) no-repeat 50% 50%; background-size: 10px auto;}
+#content .board_view .memo_swich.swich_cover:after {content: ''; display: block; position: absolute; top: 0; left: 50%; width: 20px; height: 100%; background: #e8e8eb;}
+#content .board_view .memo_write {height: 100%; padding: 15px 20px;}
+#content .board_view .memo_write > div + div {margin: 10px 0px 0px 0px;}
+#content .board_view .memo_write .new_memo {height: 30px;}
+#content .board_view .memo_write .new_memo button[type=button] {height: 100%; padding: 0px 20px;}
+#content .board_view .memo_write .titles_box {background: #FBF8F5;}
+#content .board_view .memo_write .titles_box .show_btn {width: 100%; height: 30px; padding: 0px 20px; text-align: right; background: #D9DADE url(../images/chevron_bottom.png) no-repeat right 22px top 50%; background-size: 15px auto;}
+#content .board_view .memo_write .titles_box .titles {display: none; padding: 3px 10px;}
+#content .board_view .memo_write .titles_box .titles li {margin: 4px 0px;}
+#content .board_view .memo_write .titles_box .titles li > div {display: inline-block;}
+#content .board_view .memo_write .titles_box .titles .title {margin: 0px 10px 0px 0px;}
+#content .board_view .memo_write .titles_box .titles .search_box {display: inline-block;}
+#content .board_view .memo_write .card_box {height: calc(100% - 90px);}
+#content .board_view .memo_write .card_box #card_title {display: block; width: 100%; padding: 7px; height: 30px; background: #FBF8F5;}
+#content .board_view .memo_write .card_box #card_content {display: block; width: 100%; height: calc(100% - 40px); margin: 10px 0px 0px 0px; padding: 7px; background: #FBF8F5; border: none;}
+#content .board_view .memo_write.titles_show .titles_box .titles {display: block;}
+#content .board_view .memo_write.titles_show .card_box {height: calc(100% - 160px);}
+#content .board_view.memobox_opened .category_list {width: 30px; overflow: hidden;}
+#content .board_view.memobox_opened .cards {overflow: hidden;}
+#content .board_view.memobox_opened .memo_box {width: calc(100% - 40px);}
+#content .board_view.memobox_opened .memo_swich button[type=button]:first-child {display: none;}
+#content .board_view.memobox_opened .memo_swich button[type=button]:last-child {display: block;}
+
+/* animation */
+@-webkit-keyframes hide {}
+@keyframes hide {}
+
+@media all and (max-width: 1200px) {
+  #content .board_view .category_list {width: calc(100% - 20px);}
+  #content .board_view .memo_box {width: 0;}
+  #content .board_view .memo_box .titles_box {width: 100%;}
+  #content .board_view.memobox_opened .category_list {overflow: auto; width: calc(100% - 420px); padding: 15px 15px;}
+  #content .board_view.memobox_opened .cards {overflow: auto;}
+  #content .board_view.memobox_opened .memo_box {width: 400px;}
+}
