@@ -20,32 +20,49 @@ def home():
 #     # 2. 성공하면 success 메시지와 함께 stars_list 목록을 클라이언트에 전달합니다.
 #     return jsonify({'result': 'success', 'msg': 'list 연결되었습니다!'})
 
+# def next_id():
+#
+    # nextId = thisId + 1
+    # db.nextId.update_one({'next_board' : {$set: {nextId}}})
 
-@app.route('/post_board', methods=['POST'])
+@app.route('/api/boards', methods=['POST'])
 def post_board():
-    # 1. 클라이언트가 전달한 post 데이타를 서버변수에 저장한다.
-    name_board = request.form['post_board_name']
-    name = {'board': name_board}
-    db.board.insert_one(name)
+    b_name = request.form['board_name']
+    row_ids = db.nextId.find().limit(1)[0]
+    b_id = row_ids['next_board']
+    data = {'b_Id': b_id, 'name': b_name}
+
+    db.board.insert_one(data)
+    db.nextId.update_one({'next_board': b_id}, {'$set': {'next_board': b_id + 1}})
     return jsonify({'result': 'success'})
 
-@app.route('/post_category', methods=['POST'])
+@app.route('/api/boards', methods=['GET'])
+def get_boards():
+    boards = list(db.board.find({}, {'_id': False}))
+    return jsonify({'result': 'success', 'board': boards})
+
+@app.route('/api/boards', methods=['PUT'])
+def put_board():
+    # board_name = list(db.board.find({}, {'_id': False}))
+    return jsonify({'result': 'success'})
+
+
+@app.route('/api/categorys', methods=['POST'])
 def post_category():
-    # 1. 클라이언트가 전달한 post 데이타를 서버변수에 저장한다.
-    name_category = request.form['post_category_name']
-    name = {'category': name_category}
-    db.category.insert_one(name)
+    c_name = request.form['category_name']
+    b_id = request.form['board_id']
+    row_ids = db.nextId.find().limit(1)[0]
+    c_id = row_ids['next_category']
+    data = {'b_id': b_id, 'c_Id': c_id, 'name': c_name}
+
+    db.category.insert_one(data)
+    db.nextId.update_one({'next_category': c_id}, {'$set': {'next_category': c_id + 1}})
     return jsonify({'result': 'success'})
 
-@app.route('/get_board', methods=['GET'])
-def get_board():
-    name_board = list(db.board.find({}, {'_id': False}))
-    return jsonify({'result': 'success', 'board_names': name_board})
-
-@app.route('/get_category', methods=['GET'])
+@app.route('/api/categorys', methods=['GET'])
 def get_catogory():
-    name_category = list(db.category.find({}, {'_id': False}))
-    return jsonify({'result': 'success', 'category_names': name_category})
+    categorys = list(db.category.find({}, {'_id': False}))
+    return jsonify({'result': 'success', 'category': categorys})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
