@@ -227,7 +227,7 @@
           -->
 
           <div class="create_name">
-            <input type="text" id="add_category" class="write_name">
+            <input type="text" class="add_category write_name">
             <span class="plus_shape show">+</span>
           </div>
         </div>
@@ -319,43 +319,41 @@ $('.create_name').on('click', function(){
 
 // 이름을 추가할 때 보여지는 input 창 focusout 시 이름 생성
 $('.write_name').focusout(function(){
-  var $this = $(this);
+  var nameInput = $(this);
 
   // value가 없으면 리스트 미생성
-  if ( !$(this).val() ) {
-    $(this).next('.plus_shape').addClass('show')
-    $(this).removeClass('show').val('')
+  if ( !nameInput.val() ) {
+    nameInput.next('.plus_shape').addClass('show')
+    nameInput.removeClass('show').val('')
     return;
   }
 
-  if ( $(this).is('#add_board') ) {
+  if ( nameInput.is('#add_board') ) {
     const board_name = $('#add_board').val();
 
     Promise.resolve({ board_name })
     .then(postBoard)
     .then(createBoardEl)
-    .then(viewMemo)
-    .then(function(){
-      createCategoryEl()
-    })
+    .then(viewBoard)
+    .then(createCategoryEl)
 
-    // postBoard()
-    // .then(function(){
-    //   createBoardEl();
-    //   viewMemo(); //비동기상태
-    //   //createCategoryEl();
-    // })
-  } else if ( $(this).is('#add_category') ) {
-    postCategory();
-    createCategoryEl();
+  } else if ( nameInput.is('.add_category') ) {
+    let category_name = $(this).val();
+    let b_id = $('.board_list .board.active .board_input').attr('data');
+
+    console.log({category_name, b_id})
+
+    Promise.resolve({ category_name, b_id })
+    .then(postCategory)
+    .then(createCategoryEl)
   }
 
+  //보드와 카테고리 각각에 이벤트 등록
+  // handleElEvent($('.board, .category_name'));
+  nameInput.next('.plus_shape').addClass('show')
+  // nameInput.removeClass('show').val('')
 
-  handleElEvent($('.board, .category_name'));
-  $(this).next('.plus_shape').addClass('show')
-  $(this).removeClass('show').val('')
-
-  function viewMemo(){
+  function viewBoard(){
     $('.board_list .board').removeClass('active');
     $('#add_board').parent().prev('.board').addClass('active');
   }
@@ -378,6 +376,7 @@ $('.write_name').focusout(function(){
   }
 });
 
+// board name post
 function postBoard({ board_name }){
   // let board_name = $('#add_board').val();
   console.log("board_name", board_name)
@@ -412,31 +411,36 @@ function createBoardEl() {
         '</li>'
       );
 
+      //보드 click e
+      $('.board').off('click');
       $('.board').on('click', function () {// 클릭 시 board 활성화
         $('.board').removeClass('active');
         $(this).addClass('active');
         createCategoryEl();
       })
 
-      createListNameDropdown($('.board_list .board'), $('#board_dropdown'));
+      //보드 더블클릭 e
+      handleElEvent($('.board'));
+
+      // 메모쓰기 드롭박스
+      // createListNameDropdown($('.board_list .board'), $('#board_dropdown'));
     }
 
+    // 첫번째 보드 active 문제가 있음
     $('.board_list').find('.board').eq(0).addClass('active');
   })
 }
-
 createBoardEl();
 
-function postCategory(){
-  let category_name = $('#add_category').val();
-  let b_id = $('.board_list .board.active .board_input').attr('data');
-
+// category name post
+function postCategory({ category_name, b_id }){
+  console.log("category_name", category_name)
   if (b_id === undefined) {
     alert('보드를 선택해주세요')
     return;
   }
 
-  $.ajax({
+  return $.ajax({
     type: 'POST',
     url: '/api/categorys',
     data: {'category_name':category_name, 'board_id':b_id},
@@ -445,41 +449,45 @@ function postCategory(){
     }
   })
 }
-// let b_id = 0;
 
 // category name 생성 및 add_memo 이벤트 생성
 function createCategoryEl() {
   $('.category_list .category').remove();
 
-  $.ajax({
+  return $.ajax({
     type: 'GET',
-    url: '/api/categorys',
-    success: function (response) {
-      let b_id = $('.board_list .board.active .board_input').attr('data');
-      let table = response['category']
+    url: '/api/categorys'
+  })
+  .then(function(response){
+    let b_id = $('.board_list .board.active .board_input').attr('data');
+    let table = response['category'];
 
-      for (let i = 0; i < table.length; i++) {
-        let row = table[i]
+    for (let i = 0; i < table.length; i++) {
+      let row = table[i]
 
-        if ( row['b_id'] === b_id ) {
-          $('.category_list .create_name').before(
-            '<div class="category">\n' +
-              '<div class="category_name">\n' +
-                '<input type="text" value="'+row['name']+'" data="'+row['c_Id']+'" class="name_input category_input">\n' +
-                '<span class="name_span category_span show">' + row['name'] + '</span>\n' +
-              '</div>\n' +
-              '<ul class="cards">\n' +
-                '<li class="create_card">\n' +
-                  '<button type="button" class="add_memo">+</button>\n' +
-                '</li>\n' +
-              '</ul>\n' +
-            '</div>'
-          );
-          createListNameDropdown($('.category .category_name'), $('#category_dropdown'));
-        }
+      if ( row['b_id'] === b_id ) {
+        $('.category_list .create_name').before(
+          '<div class="category">\n' +
+            '<div class="category_name">\n' +
+              '<input type="text" value="'+row['name']+'" data="'+row['c_Id']+'" class="name_input category_input">\n' +
+              '<span class="name_span category_span show">' + row['name'] + '</span>\n' +
+            '</div>\n' +
+            '<ul class="cards">\n' +
+              '<li class="create_card">\n' +
+                '<button type="button" class="add_memo">+</button>\n' +
+              '</li>\n' +
+            '</ul>\n' +
+          '</div>'
+        );
+
+        //카테고리 더블클릭 e
+        handleElEvent($('.category_name'));
+
+        // 메모쓰기 드롭박스
+        // createListNameDropdown($('.category .category_name'), $('#category_dropdown'));
       }
     }
-  })
+  });
 
   $('.add_memo').on('click', function(){
     var docWidth = $(document).outerWidth();
@@ -493,8 +501,7 @@ function createCategoryEl() {
     $('#card_title').focus();
   });
 }
-
-createCategoryEl()
+createCategoryEl();
 
 function createListNameDropdown(names, box) {
   var namesList = [];
@@ -517,7 +524,8 @@ function createListNameDropdown(names, box) {
 
 function handleElEvent(selector) {
   // board 리스트 이벤트 (active 및 modify)
-  $(selector).on('dblclick', function(){// 더블클릭 시 board input창이 활성화 되며 수정(modify)모드
+  selector.off('dblclick');
+  selector.on('dblclick', function(){// 더블클릭 시 board input창이 활성화 되며 수정(modify)모드
     var childInputEl = $(this).children('.name_input');
     var nowValue = $(this).children('.name_input').val();
 
@@ -525,11 +533,9 @@ function handleElEvent(selector) {
     childInputEl.addClass('show');
     childInputEl.focus().val('').val(nowValue);
   });
-
   $('.name_input').focusout(function(){// focusout 시 수정완료
     $(this).removeClass('show')
     $(this).siblings('.name_span').text($(this).val()).addClass('show')
-
   }).on('keydown',function(e){
     var keyCode = e.which?e.which:e.keyCode;
 
