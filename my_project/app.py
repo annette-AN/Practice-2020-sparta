@@ -65,20 +65,21 @@ def get_category():
 
 @app.route('/api/memos', methods=['POST'])
 def post_memo():
-    # c_name = request.form['category_name']
-    # b_id = request.form['board_id']
-    # row_ids = db.nextId.find().limit(1)[0]
-    # c_id = row_ids['next_category']
-    # data = {'b_id': b_id, 'c_Id': c_id, 'name': c_name}
-    #
-    # db.category.insert_one(data)
-    # db.nextId.update_one({'next_category': c_id}, {'$set': {'next_category': c_id + 1}})
+    name = request.form['memo_name']
+    desc = request.form['memo_desc']
+    c_id = request.form['category_id']
+    row_ids = db.nextId.find().limit(1)[0]
+    m_id = row_ids['next_memo']
+    data = {'c_Id': c_id, 'm_Id': m_id, 'name': name, 'desc': desc}
+
+    db.memo.insert_one(data)
+    db.nextId.update_one({'next_memo': m_id}, {'$set': {'next_memo': m_id + 1}})
     return jsonify({'result': 'success'})
 
 @app.route('/api/memos', methods=['GET'])
 def get_memo():
-    # categorys = list(db.category.find({}, {'_id': False}))
-    return jsonify({'result': 'success', 'category': categorys})
+    memos = list(db.memo.find({}, {'_id': False}))
+    return jsonify({'result': 'success', 'memo': memos})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

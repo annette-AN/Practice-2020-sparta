@@ -266,7 +266,7 @@
                     <span>category name</span>
                   </div>
                   <div class="search_box">
-                    <input type="text" id="category_search" class="search_input">
+                    <input type="text" id="category_search" class="search_input" data="19">
                     <ul id="category_dropdown" class="result_list">
                       <!-- 검색값이 없을 경우 create name 보여지고 선택가능 -->
                       <li class="create">create name</li>
@@ -277,8 +277,8 @@
             </div>
 
             <div class="card_box">
-              <input type="text" id="card_title" placeholder="title">
-              <textarea name="" id="card_content" rows="10" placeholder="content"></textarea>
+              <input type="text" id="card_title" class="write_memo" placeholder="title">
+              <textarea name="" id="card_content" class="write_memo" rows="10" placeholder="content"></textarea>
             </div>
           </div>
           <!-- //memo_write -->
@@ -317,7 +317,7 @@ $('.create_name').on('click', function(){
   $(this).children('.write_name').addClass('show').focus();
 });
 
-// 이름을 추가할 때 보여지는 input 창 focusout 시 이름 생성
+// 보드, 카테고리 생성
 $('.write_name').focusout(function(){
   var nameInput = $(this);
 
@@ -374,6 +374,55 @@ $('.write_name').focusout(function(){
   if ( keyCode === 27 ) {
     $(this).val('').focusout();
   }
+});
+
+// 메모 생성
+// $('.write_memo').on('focusout', function(){
+//   let memoInput = $(this)
+//   if ( memoInput.has)
+// });
+
+$('#card_title').on('focusout', function(){
+  let $content = $('#card_content')
+
+  if ( $content.val() === '' ) {
+    $content.focus();
+  }
+});
+
+$('#card_content').on('focusout', function(){
+  let $memoBox = $('.memo_write');
+  let boardName = $('#board_search').val();
+  let categoryName = $('#category_search').val();
+  let c_id = $('#category_search').attr('data');
+  let memo_name = $('#card_title').val()
+  let memo_desc = $('#card_content').val()
+
+  if ( memo_desc === '' ) return;
+
+  // 메모 title (보드, 카테고리)이 선택되지 않았을 때
+  if ( boardName === '' ) {
+    $memoBox.removeClass('titles_show');
+    $memoBox.addClass('titles_show')
+    alert('보드를 선택해주세요.')
+    return;
+  } else if ( categoryName === '' ) {
+    $memoBox.removeClass('titles_show');
+    $memoBox.addClass('titles_show')
+    alert('카테고리를 선택해주세요.')
+    return;
+  }
+
+  if ( memo_name === '' ) {
+    $('#card_title').val('제목없음');
+  }
+
+  Promise.resolve({ memo_name, memo_desc, c_id })
+  .then(postMemo)
+  // .then(createBoardEl)
+  // .then(viewBoard)
+  // .then(createCategoryEl)
+
 });
 
 // board name post
@@ -487,21 +536,101 @@ function createCategoryEl() {
         // createListNameDropdown($('.category .category_name'), $('#category_dropdown'));
       }
     }
-  });
 
-  $('.add_memo').on('click', function(){
-    var docWidth = $(document).outerWidth();
-    if ( docWidth <= 1200 ) {
-      $('.board_view').removeClass('memobox_opened')
-      $('.board_view').addClass('memobox_opened')
-      $('.memo_swich').removeClass('swich_cover')
+    //메모 추가하기 버튼 e
+    $('.add_memo').off('click');
+    $('.add_memo').on('click', function(){
+      var docWidth = $(document).outerWidth();
+      if ( docWidth <= 1200 ) {
+        $('.board_view').removeClass('memobox_opened')
+        $('.board_view').addClass('memobox_opened')
+        $('.memo_swich').removeClass('swich_cover')
+        $('#card_title').focus();
+        return;
+      }
       $('#card_title').focus();
-      return;
-    }
-    $('#card_title').focus();
+    });
   });
 }
 createCategoryEl();
+
+// memo name post
+function postMemo({ memo_name, memo_desc , c_id }){
+  console.log("memo_name", memo_name, "memo_desc", memo_desc, "c_id", c_id)
+  if (c_id === undefined) {
+    alert('카테고리를 선택해주세요')
+    return;
+  }
+
+  return $.ajax({
+    type: 'POST',
+    url: '/api/memos',
+    data: {'memo_name':memo_name, 'memo_desc':memo_desc, 'category_id':c_id},
+    success: function (response) {
+      alert('memo post')
+    }
+  })
+}
+
+// memo 생성
+function createMemoEl() {
+  let $card = $('.cards .card').remove()
+
+  return $.ajax({
+    type: 'GET',
+    url: '/api/memos'
+  })
+  .then(function(response){
+    let c_id = $('.category .category_name .category_input').attr('data');
+    let table = response['memo'];
+
+    for (let i = 0; i < table.length; i++) {
+      let row = table[i]
+      console.log(row)
+
+      $('.cards .create_card').before('<li class="card" data="'+row['m_Id']+'">\n' +
+        '<div class="card_preview">\n' +
+          row['desc'] +
+        '</div>\n' +
+        '<div class="each_setting">\n' +
+          '<button type="button"><span class="text_ir">설정</span></button>\n' +
+          '<ul class="setting_dropdown">\n' +
+            '<li>설정 리스트</li>\n' +
+          '</ul>\n' +
+        '</div>\n' +
+      '</li>');
+
+      // if ( row['c_id'] === c_id ) {
+      //   $('.cards .create_card').before('<li class="card" data="'+row['m_Id']+'">\n' +
+      //     '<div class="card_preview">\n' +
+      //       row['desc'] +
+      //     '</div>\n' +
+      //     '<div class="each_setting">\n' +
+      //       '<button type="button"><span class="text_ir">설정</span></button>\n' +
+      //       '<ul class="setting_dropdown">\n' +
+      //         '<li>설정 리스트</li>\n' +
+      //       '</ul>\n' +
+      //     '</div>\n' +
+      //   '</li>');
+      // }
+    }
+
+    //메모 추가하기 버튼 e
+    // $('.add_memo').off('click');
+    // $('.add_memo').on('click', function(){
+    //   var docWidth = $(document).outerWidth();
+    //   if ( docWidth <= 1200 ) {
+    //     $('.board_view').removeClass('memobox_opened')
+    //     $('.board_view').addClass('memobox_opened')
+    //     $('.memo_swich').removeClass('swich_cover')
+    //     $('#card_title').focus();
+    //     return;
+    //   }
+    //   $('#card_title').focus();
+    // });
+  });
+}
+createMemoEl();
 
 function createListNameDropdown(names, box) {
   var namesList = [];
