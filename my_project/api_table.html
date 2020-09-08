@@ -91,7 +91,7 @@
                 <td>메모 작성<br>(create)</td>
                 <td rowspan="3">/api/memos</td>
                 <td>POST</td>
-                <td>메모정보('memo_name': string)</td>
+                <td>메모이름('name': string) 메모내용('desc': string)</td>
                 <td>(JSON 형식) 'result'='success'</td>
             </tr>
             <tr>
@@ -99,7 +99,7 @@
 <!--                <td></td>-->
                 <td>GET</td>
                 <td>메모정보('memo': [])<br>
-                    --> 메모정보: [카테고리Id('c_Id': number), 메모Id('m_Id': number), 메모이름('name': string)]</td>
+                    --> 메모정보: [카테고리Id('c_Id': number), 메모Id('m_Id': number), 메모이름('name': string), 메모내용('desc': string)]</td>
                 <td>(JSON 형식) 'result'='success', 'memo_data'=memo</td>
             </tr>
             <tr>
