@@ -72,7 +72,8 @@
 #content .board_view .create_name input[type="text"], #content .board_view .create_name span {width: 100%; height: 100%; padding: 5px 12px; font-size: 12px;}
 #content .board_view .cards {overflow: auto; height: auto; max-height: calc(100% - 30px);}
 #content .board_view .cards li {position: relative; height: 60px; margin: 10px; background: #edeff3; -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); cursor: pointer;}
-#content .board_view .cards .card_preview {width: calc(100% - 35px); padding: 10px; white-space: normal;}
+#content .board_view .cards .memo_title {display: none;}
+#content .board_view .cards .memo_desc {width: calc(100% - 35px); padding: 10px; white-space: normal;}
 #content .board_view .cards .each_setting {top: 15px; right: 5px;}
 #content .board_view .cards .create_card {height: 30px;}
 #content .board_view .cards .create_card .add_memo {display: block; width: 100%; height: 100%;}
