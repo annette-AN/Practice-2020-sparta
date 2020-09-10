@@ -662,39 +662,36 @@ function handleElEvent(selector) {
   // board 리스트 이벤트 (active 및 modify)
   selector.off('dblclick');
   selector.on('dblclick', function(){// 더블클릭 시 board input창이 활성화 되며 수정(modify)모드
-    var childInputEl = $(this).children('.name_input');
-    var nowValue = $(this).children('.name_input').val();
+    let $selector = $(this)
+    let childInputEl = $selector.children('.name_input');
+    let nowValue = $selector.children('.name_input').val();
 
-    $(this).children('.name_span').removeClass('show');
+    $selector.children('.name_span').removeClass('show');
     childInputEl.addClass('show');
     childInputEl.focus().val('').val(nowValue);
   });
+
   $('.name_input').focusout(function(){// focusout 시 수정완료
-    $(this).removeClass('show')
-    $(this).siblings('.name_span').text($(this).val()).addClass('show')
+    let $nameInput = $(this)
+    $nameInput.removeClass('show')
+    $nameInput.siblings('.name_span').text($nameInput.val()).addClass('show')
   }).on('keydown',function(e){
-    var keyCode = e.which?e.which:e.keyCode;
+    let $nameInput = $(this)
+    let keyCode = e.which?e.which:e.keyCode;
 
     // enter 키 입력 시 수정완료 (value 값이 있을 때만)
     if ( keyCode === 13 ) {
-      if ( $(this).val() === '' ) {
-        $(this).val($(this).siblings('.name_span').text()).focusout();
+      if ( $nameInput.val() === '' ) {
+        $nameInput.val($nameInput.siblings('.name_span').text()).focusout();
         return;
       }
 
-      if ( $(this).is('.board_input') ) {
-        // createListNameDropdown($('.board_list .board'), $('#board_dropdown'));
-      }
-      if ( $(this).is('.category_input') ) {
-        // createListNameDropdown($('.category .category_name'), $('#category_dropdown'));
-      }
-
-      $(this).focusout();
+      $nameInput.focusout();
     }
 
     // esc 키 입력 시 취소
     if ( keyCode === 27 ) {
-      $(this).val($(this).siblings('.name_span').text()).focusout();
+      $nameInput.val($nameInput.siblings('.name_span').text()).focusout();
     }
   });
 }
